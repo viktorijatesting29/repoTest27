@@ -1,19 +1,20 @@
 os: linux
 
-
 language: java
 services:
   - docker
 cache: bundler
 dist: bionic
 
-
 install: skip
 
 jobs:
   include:
     - name: failing
-      script: true
+      script:
+        - echo "Generating long output..."
+        - for i in $(seq 1 1000); do echo "Line $i: This is a long log entry for testing purposes."; done
+        - false  # force failure to trigger after_failure
 
 after_success:
   - echo done
@@ -21,6 +22,7 @@ after_success:
 after_failure:
   - echo failed
   - echo $TRAVIS_TEST_RESULT
+
   
   
 
